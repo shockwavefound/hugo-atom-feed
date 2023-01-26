@@ -92,7 +92,7 @@
             {{ else }}
                 <id>{{ .Permalink }}</id>
             {{ end }}
-            {{ with .Params.authors -}}
+            {{ with .Param "authors" -}}
                 {{- range . -}} <!-- Assuming the author front-matter to be a list -->
                     {{-  with index $.Site.Data.bios . }}
                     <author>
@@ -110,7 +110,7 @@
                 {{ $original := .Page.Resources.GetMatch (printf "*%s*" .Params.image) }}
                 {{ if $original }}
                     {{ $image := $original.Resize "600x" }}
-                    {{ $headerImage = printf `<figure><img src="%s" alt="%s"><figcaption>%s</figcaption></figure>` $image.Permalink (.Params.imageAlt | default "") (.Params.imageCaption | default "") }}
+                    {{ $headerImage = printf `<figure><img src="%s" alt="%s"><figcaption>%s</figcaption></figure>` $image.Permalink (.Params.imageAlt | default "") (.Params.imageCaption | markdownify | default "") }}
                 {{ end }}
             {{ end }}
             {{ printf `<content type="html"><![CDATA[%s%s%s]]></content>` $description $headerImage .Content | safeHTML }}
