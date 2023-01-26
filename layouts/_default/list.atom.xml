@@ -92,11 +92,13 @@
             {{ else }}
                 <id>{{ .Permalink }}</id>
             {{ end }}
-            {{ with .Params.author -}}
+            {{ with .Params.authors -}}
                 {{- range . -}} <!-- Assuming the author front-matter to be a list -->
+                    {{-  with index $.Site.Data.bios . }}
                     <author>
-                        <name>{{ . }}</name>
+                        <name>{{ with .honorificPrefix }}{{ . }} {{ end }}{{ .name }}{{ with .honorificSuffix }}, {{ . }}{{ end }}</name>
                     </author>
+                    {{- end }}         
                 {{- end -}}
             {{- end }}
             <published>{{ .Date.Format "2006-01-02T15:04:05-07:00" | safeHTML }}</published>
@@ -104,6 +106,10 @@
             {{ $description1 := .Description | default "" }}
             {{ $description := (cond (eq "" $description1) "" (printf "<blockquote>%s</blockquote>" ($description1 | markdownify))) }}
             {{ printf `<content type="html"><![CDATA[%s%s]]></content>` $description .Content | safeHTML }}
+            {{ with .Summary }}
+            {{ printf `<summary type="html"><![CDATA[%s]]></summary>` . | safeHTML }}
+            {{ end }}
+
             {{ with site.Taxonomies }}
                 {{ range $taxo,$_ := . }} <!-- Defaults taxos: "tags", "categories" -->
                     {{ with $page.Param $taxo }}
