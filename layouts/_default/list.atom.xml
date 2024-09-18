@@ -50,10 +50,10 @@
             <logo>{{ (. | fingerprint).Permalink }}</logo>
         {{- end }}
     {{ end }}
-    {{ with site.Author.name -}}
+    {{ with $.Site.Params.Author.name -}}
         <author>
             <name>{{ . }}</name>
-            {{ with site.Author.email }}
+            {{ with $.Site.Params.Author.email }}
                 <email>{{ . }}</email>
             {{ end -}}
         </author>
@@ -98,7 +98,7 @@
                     <author>
                         <name>{{ with .honorificPrefix }}{{ . }} {{ end }}{{ .name }}{{ with .honorificSuffix }}, {{ . }}{{ end }}</name>
                     </author>
-                    {{- end }}         
+                    {{- end }}
                 {{- end -}}
             {{- end }}
             <published>{{ .Date.Format "2006-01-02T15:04:05-07:00" | safeHTML }}</published>
